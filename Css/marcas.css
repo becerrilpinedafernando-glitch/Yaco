@@ -1,0 +1,176 @@
+:root {
+    --color-primary-blue: #1e3a8a;   /* azul fuerte */
+    --color-light-blue: #3b82f6;     /* azul claro */
+    --color-bg-light: #f1f5f9;       /* gris muy claro */
+    --radius: 14px;
+}
+
+/* Reseteos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--color-bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* ==========================================================
+   🎯 HEADER + MENÚ
+   ========================================================== */
+
+.header {
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+    padding: 14px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-nav-container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-yaco {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-yaco .logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+.nombre-empresa {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--color-primary-blue);
+    letter-spacing: 1px;
+}
+
+.nav-principal {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-principal a {
+    text-decoration: none;
+    color: var(--color-primary-blue);
+    font-size: 18px;
+    font-weight: 600;
+    transition: 0.2s ease-in-out;
+}
+
+.nav-principal a:hover {
+    color: var(--color-light-blue);
+}
+
+.nav-principal .activo {
+    color: var(--color-light-blue);
+    font-weight: 800 !important;
+}
+
+/* ==========================================================
+   📌 TARJETAS, CUADROS, CONTENEDORES
+   ========================================================== */
+
+.shadow-lg {
+    box-shadow: 0px 4px 14px rgba(0,0,0,0.15) !important;
+}
+
+.rounded-xl {
+    border-radius: 18px !important;
+}
+
+.bg-white {
+    background: #fff !important;
+}
+
+.bg-bg-light {
+    background: var(--color-bg-light) !important;
+}
+
+/* ==========================================================
+   🟦 MENÚ LATERAL DE MARCAS
+   ========================================================== */
+
+.brand-button {
+    font-size: 18px;
+    padding: 12px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.brand-button:hover {
+    background: var(--color-light-blue);
+    color: #fff;
+}
+
+.brand-button.active {
+    background: var(--color-primary-blue);
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Animación suave contenido */
+.content-enter {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================
+   📮 FORMULARIOS (CONTACTO)
+   ========================================================== */
+
+input, textarea {
+    outline: none;
+    transition: 0.25s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--color-primary-blue) !important;
+    box-shadow: 0 0 4px var(--color-primary-blue);
+}
+
+/* ==========================================================
+   🦶 FOOTER
+   ========================================================== */
+
+footer {
+    background: var(--color-primary-blue);
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* ==========================================================
+   📱 RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .nav-principal {
+        display: none;
+    }
+
+    .logo-yaco .nombre-empresa {
+        font-size: 24px;
+    }
+}

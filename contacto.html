@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotiza tu pieza - YACO</title>
+
+    <!-- Fuente -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- CSS unificado que ya te preparé -->
+    <link rel="stylesheet" href="Css/marcas.css">
+
+    <!-- Tailwind para el layout moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': 'var(--color-primary-blue)',
+                        'light-blue': 'var(--color-light-blue)',
+                        'bg-light': 'var(--color-bg-light)',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =============================== */
+        /*      PANTALLA DE CARGA          */
+        /* =============================== */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-bg-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            color: var(--color-primary-blue);
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .spinner {
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-top: 8px solid var(--color-primary-blue);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =============================== -->
+    <!--      PANTALLA DE CARGA         -->
+    <!-- =============================== -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p class="text-xl font-bold mt-4 tracking-wider">Cargando Catálogo...</p>
+        <p class="text-sm mt-1">Calidad y precio en todo lugar</p>
+    </div>
+
+    <!-- HEADER (como productos) -->
+    <header class="header">
+        <div class="logo-nav-container">
+            <div class="logo-yaco">
+                <img src="Img/logo.png" alt="Logo YACO" class="logo">
+                <span class="nombre-empresa">YACO</span>
+            </div>
+
+            <nav class="nav-principal">
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="marcas.html">Marcas</a>
+                <a href="contacto.html" class="activo">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main id="main-content" class="container mx-auto px-4 py-10">
+        <section class="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
+
+            <h2 class="text-3xl font-extrabold text-primary-blue mb-3 text-center">Solicita tu Cotización</h2>
+            <p class="text-gray-600 text-center mb-6">
+                Envíanos los detalles de la pieza que necesitas y te contactaremos a la brevedad.
+            </p>
+
+            <!-- FORMULARIO ORIGINAL (no modificado) -->
+            <form method="post" action="https://formsubmit.co/isaacohernandez22@gmail.com" class="flex flex-col gap-4">
+
+                <label for="nombre" class="font-semibold text-gray-700">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required class="p-3 border border-gray-300 rounded-lg">
+
+                <label for="email" class="font-semibold text-gray-700">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required class="p-3 border border-gray-300 rounded-lg">
+
+                <label for="pieza" class="font-semibold text-gray-700">
+                    Pieza que necesitas (Marca, Modelo, Especificaciones):
+                </label>
+                <textarea id="pieza" name="pieza" rows="6" required class="p-3 border border-gray-300 rounded-lg"></textarea>
+
+                <label for="direccion" class="font-semibold text-gray-700">Dirección de entrega (opcional):</label>
+                <input type="text" id="direccion" name="direccion" class="p-3 border border-gray-300 rounded-lg">
+
+                <button type="submit" name="enviar"
+                        class="btn-productos bg-primary-blue text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 transition">
+                    Enviar cotización
+                </button>
+            </form>
+
+            <div class="mensaje-nota mt-6 text-center text-gray-700">
+                <p>⚠️ <strong>NOTA IMPORTANTE:</strong> Me pika el webo derecho :D.</p>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- FOOTER igual al estilo YACO -->
+    <footer class="footer">
+        <p>📍 Partanna 7 Col. Punta Palermo, Tecámac, Estado de México, C.P. 55767</p>
+        <p>📞 Tel. 5618351001 | ✉️ 01.facosta.contabilidad@gmail.com</p>
+        <p>&copy; 2025 Refacciones Industriales YACO | Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Ocultar pantalla de carga después de 1.5 segundos
+        window.addEventListener('load', () => {
+            const loading = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>

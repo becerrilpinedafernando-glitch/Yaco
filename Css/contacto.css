@@ -1,0 +1,57 @@
+:root {
+            --color-yaco-blue: #004a99; /* Azul principal de marca */
+            --color-yaco-light: #e6f0ff; /* Fondo claro */
+            --color-yaco-accent: #ffb800; /* Amarillo/naranja de acento */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-yaco-light);
+            min-height: 100vh;
+        }
+
+        .form-container {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-estilizado input[type="text"], 
+        .form-estilizado input[type="email"], 
+        .form-estilizado textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-estilizado input:focus,
+        .form-estilizado textarea:focus {
+            border-color: var(--color-yaco-blue);
+            box-shadow: 0 0 0 3px rgba(0, 74, 153, 0.2);
+            outline: none;
+        }
+
+        .btn-productos {
+            transition: background-color 0.3s, transform 0.1s, opacity 0.3s;
+        }
+
+        .btn-productos:hover:not(:disabled) {
+            background-color: #003766;
+            transform: translateY(-1px);
+        }
+
+        /* Estilo para el mensaje de estado/agradecimiento */
+        #status-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bounce effect */
+            z-index: 1000;
+        }
+        #status-message.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }

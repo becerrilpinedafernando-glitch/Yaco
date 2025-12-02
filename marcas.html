@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Css/marcas.css">
+    <title>Marcas | YACO</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': 'var(--color-primary-blue)',
+                        'light-blue': 'var(--color-light-blue)',
+                        'bg-light': 'var(--color-bg-light)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =============================== */
+        /*      PANTALLA DE CARGA          */
+        /* =============================== */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-bg-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            color: var(--color-primary-blue);
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .spinner {
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-top: 8px solid var(--color-primary-blue);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <!-- ================================ -->
+    <!--     LISTA DE MARCAS Y CONTENIDO  -->
+    <!-- ================================ -->
+    <script>
+        const marcas = [
+            {
+                id: "Worcester",
+                name: "Worcester",
+                image: "Img/worcester.png",
+                description: "Gran empresa para Válvulas de Esfera de Alto Rendimiento y Automatización. Destacada por sus válvulas de bola de alta calidad y su diseño ideal para sistemas automatizados."
+            },
+            {
+                id: "Walworth",
+                name: "Walworth",
+                image: "Img/walworth.png",
+                description: "Especialista en Válvulas Industriales para proyectos de gran escala. Ofrece válvulas Compuerta, Globo, Retención y Esfera ampliamente utilizadas en petróleo, gas y petroquímica."
+            },
+            {
+                id: "TFV",
+                name: "TFV",
+                image: "Img/tfv.png",
+                description: "Proveedor de soluciones versátiles y económicas en válvulas industriales. Maneja válvulas Esfera, Mariposa y Retención con gran equilibrio entre calidad y costo."
+            },
+            {
+                id: "Vayremex",
+                name: "Vayremex",
+                image: "Img/vayremex.png",
+                description: "Fabricante y distribuidor de válvulas industriales especializado en Esfera, Retención y Compuerta, enfocado en las necesidades específicas del mercado latinoamericano."
+            },
+            {
+                id: "Burkert",
+                name: "Burkert",
+                image: "Img/burkert.png",
+                description: "Líder mundial en sistemas de medición y control de fluidos. Su tecnología destaca por su precisión en industrias farmacéuticas, alimentarias y de tratamiento de agua."
+            },
+            {
+                id: "Spirax",
+                name: "Spirax Sarco",
+                image: "Img/spirax.png",
+                description: "Líder en soluciones de vapor industrial. Sus trampas de vapor, válvulas de control y equipos de eficiencia energética optimizan procesos térmicos y mejoran la seguridad."
+            }
+        ];
+
+        function renderBrandButtons() {
+            const sidebar = document.getElementById('brand-sidebar');
+            sidebar.innerHTML = '';
+
+            marcas.forEach(marca => {
+                const btn = document.createElement('button');
+                btn.id = `btn-${marca.id}`;
+                btn.className = 'brand-button w-full text-left p-3 text-lg text-gray-700 hover:bg-light-blue transition';
+                btn.textContent = marca.name;
+                btn.onclick = () => showBrand(marca.id);
+                sidebar.appendChild(btn);
+            });
+
+            if (marcas.length > 0) {
+                showBrand(marcas[0].id);
+            }
+        }
+
+        function showBrand(id) {
+            const marca = marcas.find(m => m.id === id);
+            if (!marca) return;
+
+            document.getElementById("brand-title").textContent = marca.name;
+            document.getElementById("brand-description").textContent = marca.description;
+
+            const img = document.getElementById("brand-image");
+            img.src = marca.image;
+            img.alt = marca.name;
+
+            document.querySelectorAll(".brand-button").forEach(b => b.classList.remove("active"));
+            document.getElementById(`btn-${id}`).classList.add("active");
+        }
+
+        window.addEventListener("load", () => {
+            // Mostrar marcas
+            renderBrandButtons();
+
+            // Ocultar pantalla de carga
+            const loading = document.getElementById("loading-screen");
+            setTimeout(() => {
+                loading.classList.add("hidden");
+            }, 1500);
+        });
+    </script>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo-nav-container">
+            <div class="logo-yaco">
+                <img src="Img/logo.png" class="logo">
+                <span class="nombre-empresa">YACO</span>
+            </div>
+
+            <nav class="nav-principal">
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="marcas.html" class="activo">Marcas</a>
+                <a href="contacto.html">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- =============================== -->
+    <!--      PANTALLA DE CARGA         -->
+    <!-- =============================== -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p class="text-xl font-bold mt-4 tracking-wider">Cargando Catálogo...</p>
+        <p class="text-sm mt-1">Calidad y precio en todo lugar</p>
+    </div>
+
+    <!-- CONTENIDO -->
+    <main id="main-content" class="container mx-auto px-4 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="w-full lg:w-1/4 bg-white rounded-xl shadow-lg">
+                <h3 class="bg-primary-blue text-white text-xl font-semibold p-4 rounded-t-xl">
+                    Selecciona una Marca
+                </h3>
+                <div id="brand-sidebar" class="flex flex-col"></div>
+            </aside>
+
+            <!-- Contenido -->
+            <section id="brand-content" class="w-full lg:w-3/4 bg-white rounded-xl shadow-lg p-8 content-enter">
+                <h2 id="brand-title" class="text-4xl font-extrabold text-primary-blue mb-6"></h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-bg-light p-4 rounded-lg shadow-inner">
+                        <img id="brand-image" src="" class="w-full rounded-lg" style="min-height:250px; object-fit:cover;">
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-3">Descripción:</h3>
+                        <p id="brand-description" class="text-gray-600 leading-relaxed"></p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-primary-blue text-white text-center py-4 mt-8 text-sm">
+        <p>&copy; 2025 Refacciones Industriales YACO</p>
+    </footer>
+
+</body>
+
+</html>
+

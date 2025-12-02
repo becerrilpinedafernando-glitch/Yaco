@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos - Tech Nova</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        // Configuración de Tailwind (parte de CSS/JS)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-light': 'var(--color-primary)',
+                        'primary-dark': 'var(--color-secondary)',
+                        'background-light': 'var(--color-background)',
+                        'text-dark': 'var(--color-text)',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-text-dark min-h-screen">
+<header class="header bg-white shadow-md py-3">
+    <div class="logo-nav-container flex justify-between items-center mx-auto w-[90%]">
+
+        <!-- Logo + Nombre -->
+        <div class="logo-yaco flex items-center space-x-3">
+            <img src="Img/logo.png" alt="Logo YACO" class="logo w-12 h-12 object-contain">
+            <span class="nombre-empresa text-2xl font-bold tracking-wide text-primary-dark">YACO</span>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="nav-principal hidden md:flex space-x-8 text-lg font-semibold text-primary-dark">
+            <a href="index.html" class="hover:text-primary-light transition">Inicio</a>
+            <a href="productos.html" class="activo text-primary-light font-extrabold">Productos</a>
+            <a href="marcas.html" class="hover:text-primary-light transition">Marcas</a>
+            <a href="contacto.html" class="hover:text-primary-light transition">Contacto</a>
+        </nav>
+
+        <!-- Botón menú móvil -->
+        <div class="md:hidden cursor-pointer" onclick="toggleMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="29" y2="6" />
+                <line x1="3" y1="14" x2="29" y2="14" />
+                <line x1="3" y1="22" x2="29" y2="22" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="md:hidden hidden flex flex-col text-center bg-white shadow-md py-4 space-y-3 text-lg font-semibold">
+        <a href="index.html" class="hover:text-primary-light transition">Inicio</a>
+        <a href="productos.html" class="activo text-primary-light font-extrabold">Productos</a>
+        <a href="marcas.html" class="hover:text-primary-light transition">Marcas</a>
+        <a href="contacto.html" class="hover:text-primary-light transition">Contacto</a>
+    </div>
+</header>
+        <!-- Botón del carrito en móvil -->
+        <div class="md:hidden cursor-pointer" onclick="openSidebar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="17" cy="21" r="1"/>
+                <path d="M2 2h3l3.6 12.5a1 1 0 0 0 .9.7H19a1 1 0 0 0 .9-.6L23 6H6"/>
+            </svg>
+        </div>
+    </div>
+</nav>
+    <!-- 1. Notificación de Carrito Agregado (oculta por defecto) -->
+    <div id="cart-notification" class="cart-notification flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3 8-8"/></svg>
+        <p class="font-semibold">¡Producto agregado al carrito!</p>
+    </div>
+
+    <!-- 2. Panel Lateral de Carrito (Sidebar) -->
+    <!-- Overlay: Click para cerrar el panel -->
+    <div id="sidebar-overlay" class="hidden" onclick="closeSidebar()"></div>
+    
+    <!-- Panel Principal -->
+    <div id="cart-sidebar" class="flex flex-col">
+        
+        <!-- Encabezado del Panel -->
+        <div class="p-6 border-b border-primary-light flex justify-between items-center sticky top-0 bg-white z-10">
+            <h3 class="text-2xl font-bold text-primary-dark">Tu Carrito <span id="sidebar-count" class="text-gray-500 text-base">(0 items)</span></h3>
+            <button onclick="closeSidebar()" class="text-gray-500 hover:text-primary-dark transition duration-150 p-1 rounded-full hover:bg-primary-light">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- Lista de Productos en el Carrito -->
+        <div id="cart-items-list" class="flex-grow p-4 overflow-y-auto space-y-4">
+            <!-- Los items del carrito se renderizarán aquí -->
+            <p id="empty-cart-message" class="text-center text-gray-500 mt-10">Tu carrito está vacío.</p>
+        </div>
+
+        <!-- Resumen y Botón de Checkout (Parte Inferior) -->
+        <div class="p-6 border-t border-primary-light sticky bottom-0 bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-lg font-semibold text-text-dark">Subtotal:</span>
+                <span id="cart-total" class="text-2xl font-bold text-primary-dark">$0.00</span>
+            </div>
+            <button onclick="showTemporaryMessage('Simulación de Checkout: ¡Gracias por tu compra!', 'bg-primary-dark')" class="w-full bg-primary-dark hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-full transition duration-300 shadow-lg">
+                Pagar
+            </button>
+        </div>
+
+    </div>
+
+    <!-- 3. Pantalla de Carga (Loading Screen) -->
+    <div id="loading-screen">
+        <div class="spinner mb-4"></div>
+        <p class="text-xl font-bold tracking-wider">Cargando Catálogo...</p>
+        <p class="text-sm mt-2">Calidad y precio en todo lugar</p>
+    </div>
+
+    <!-- 4. Contenido Principal del Catálogo -->
+    <div id="main-content" class="container mx-auto px-4 py-8 opacity-0 transition-opacity duration-1000">
+
+        <!-- Encabezado y Título con Carrito -->
+        <header class="flex justify-between items-center mb-12 py-4 border-b border-primary-light">
+            <h1 class="text-4xl font-extrabold text-primary-dark">
+                YACO <span class="text-primary-light">| Catálogo</span>
+            </h1>
+            <!-- Ícono de Carrito que llama a openSidebar() -->
+            <div class="relative cursor-pointer p-2 rounded-full hover:bg-primary-light transition duration-200" onclick="openSidebar()">
+                <div id="cart-icon" class="text-primary-dark">
+                    <!-- El ícono se inyecta con JS al cargar -->
+                </div>
+                <!-- Contador del Carrito -->
+                <span id="cart-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+                    0
+                </span>
+            </div>
+        </header>
+<!-- Sección de Productos (Grid Responsivo) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+    <!-- Producto 1: Válvula de Retención de Bronce -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/retencion.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Válvula de Retención de Bronce</h2>
+            <p class="text-gray-500 text-sm mb-3">Válvula tipo swing check de 2", evita el retorno y mantiene flujo en una sola dirección.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$4500</span>
+                <button onclick="addToCart('Válvula de Retención de Bronce', 800)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 2: Válvula de Esfera Spirax Sarco -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/bola.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Válvula de Esfera Spirax Sarco</h2>
+            <p class="text-gray-500 text-sm mb-3">Válvula de esfera industrial de dos piezas con conexión roscada hembra.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$3500</span>
+                <button onclick="addToCart('Válvula de Esfera Spirax Sarco', 800)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 3: Válvula de Retención de Pistón -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/piston.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Válvula de Retención de Pistón</h2>
+            <p class="text-gray-500 text-sm mb-3">Válvula check de acero inoxidable 1/2", cierre automático con resorte interno.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$8300</span>
+                <button onclick="addToCart('Válvula de Retención de Pistón', 1500)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 4: Filtro Tipo Y Hierro Fundido -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/filtroy.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Filtro Tipo “Y” Spirax Sarco</h2>
+            <p class="text-gray-500 text-sm mb-3">Filtro tipo Y para eliminar impurezas en líneas de vapor, agua o gas.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$12000</span>
+                <button onclick="addToCart('Filtro Tipo “Y” Spirax Sarco', 2500)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 5: Detector de Trampas de Vapor -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/vapor.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Detector de Trampas de Vapor</h2>
+            <p class="text-gray-500 text-sm mb-3">Monitor electrónico Spira-Tec para diagnóstico de trampas de vapor.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$30,000</span>
+                <button onclick="addToCart('Detector de Trampas de Vapor', 15000)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 6: Filtro Tipo Y ANSI 600 -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/filtro.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Filtro Tipo "Y" ANSI 600</h2>
+            <p class="text-gray-500 text-sm mb-3">Filtro CF3M ANSI 600 de acero inoxidable para alta presión y temperatura.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$12000</span>
+                <button onclick="addToCart('Filtro Tipo Y ANSI 600', 5000)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 7: Rociador Tyco -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/rosiadores.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Rociador Contra Incendios Tyco</h2>
+            <p class="text-gray-500 text-sm mb-3">Sprinkler Tyco de respuesta rápida con certificación UL/FM.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$13000</span>
+                <button onclick="addToCart('Rociador Tyco', 150)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 8: Trampa de Vapor DB3 -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/trampa.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Trampa de Vapor Spirax Sarco DB3 / PN25</h2>
+            <p class="text-gray-500 text-sm mb-3">Trampa tipo cubo invertido PN25 para descarga eficiente de condensado.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$20000</span>
+                <button onclick="addToCart('Trampa Spirax Sarco DB3', 3500)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Producto 9: Válvula de Esfera Bridada Clase 300 -->
+    <div class="product-card-bg p-4 rounded-xl shadow-lg hover:shadow-2xl">
+        <img src="Img/valvular.png" class="product-image w-full h-48 object-cover rounded-lg mb-4">
+        <div class="p-2">
+            <h2 class="text-xl font-bold text-primary-dark mb-1">Válvula de Esfera Bridada 2"</h2>
+            <p class="text-gray-500 text-sm mb-3">Válvula bridada Spirax Sarco clase 300, paso reducido.</p>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-extrabold text-gray-800">$45000</span>
+                <button onclick="addToCart('Válvula de Esfera Bridada', 8000)" class="bg-primary-dark hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-md">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- Pie de Página -->
+        <footer class="text-center mt-16 py-6 border-t border-primary-light text-sm text-gray-500">
+            &copy; 2025 YACO. Derechos reservados.
+        </footer>
+    </div>
+
+
+    <script>
+        // JavaScript Unificado
+        let cartItems = []; // Almacena objetos { name, price }
+        const CART_COUNT_EL = document.getElementById('cart-count');
+        const CART_NOTIFICATION = document.getElementById('cart-notification');
+        const CART_SIDEBAR = document.getElementById('cart-sidebar');
+        const SIDEBAR_OVERLAY = document.getElementById('sidebar-overlay');
+        const CART_ITEMS_LIST = document.getElementById('cart-items-list');
+        const CART_TOTAL_EL = document.getElementById('cart-total');
+        const SIDEBAR_COUNT_EL = document.getElementById('sidebar-count');
+        const EMPTY_CART_MESSAGE = document.getElementById('empty-cart-message');
+
+        // Función para inyectar el ícono SVG del carrito
+        function getCartIcon(size = 24, stroke = 'currentColor') {
+            return `
+                <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart">
+                    <circle cx="8" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M2.5 2h1.5l1.9 6.8a.7.7 0 0 0 .7.5h10.3c.7 0 1.2-.6.9-1.3L16 8"/><path d="m19 13-1.6-4.4a.7.7 0 0 0-.7-.5H6.5"/><path d="M6 14h12l3-6H7"/>
+                </svg>
+            `;
+        }
+        
+        // Función para actualizar el contador del carrito en el header
+        function updateCartCount() {
+            CART_COUNT_EL.textContent = cartItems.length;
+            SIDEBAR_COUNT_EL.textContent = `(${cartItems.length} ${cartItems.length === 1 ? 'item' : 'items'})`;
+        }
+
+        // Función para calcular el total del carrito
+        function calculateTotal() {
+            return cartItems.reduce((total, item) => total + item.price, 0);
+        }
+
+        // Función para renderizar los productos en el panel lateral
+        function renderCartItems() {
+            CART_ITEMS_LIST.innerHTML = ''; // Limpiar lista
+            
+            if (cartItems.length === 0) {
+                EMPTY_CART_MESSAGE.classList.remove('hidden');
+            } else {
+                EMPTY_CART_MESSAGE.classList.add('hidden');
+                cartItems.forEach((item, index) => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'flex justify-between items-center border-b pb-2 last:border-b-0';
+                    itemEl.innerHTML = `
+                        <div>
+                            <p class="font-semibold text-text-dark">${item.name}</p>
+                            <p class="text-sm text-gray-500">Precio: $${item.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M15 2h2"/><path d="M7 2h2"/></svg>
+                        </button>
+                    `;
+                    CART_ITEMS_LIST.appendChild(itemEl);
+                });
+            }
+            
+            // Actualizar total
+            CART_TOTAL_EL.textContent = `$${calculateTotal().toFixed(2)}`;
+        }
+
+        // Función para eliminar un producto del carrito
+        function removeItem(index) {
+            cartItems.splice(index, 1);
+            updateCartCount();
+            renderCartItems();
+            showTemporaryMessage('Producto eliminado del carrito.', 'bg-red-500');
+        }
+
+
+        // Función que se ejecuta al dar click en "Comprar"
+        function addToCart(productName, price) {
+            // Guardar el producto completo para mostrarlo en el panel
+            cartItems.push({ name: productName, price: price });
+            updateCartCount();
+            
+            // 1. Mostrar la notificación de producto agregado (animación)
+            CART_NOTIFICATION.classList.add('show');
+            
+            // 2. Ocultar la notificación después de 2 segundos
+            setTimeout(() => {
+                CART_NOTIFICATION.classList.remove('show');
+            }, 2000);
+        }
+
+        // Función para abrir el panel lateral
+        function openSidebar() {
+            renderCartItems(); // Renderizar los ítems antes de abrir
+            CART_SIDEBAR.classList.add('open');
+            SIDEBAR_OVERLAY.classList.add('visible');
+            SIDEBAR_OVERLAY.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Evitar scroll en el fondo
+        }
+
+        // Función para cerrar el panel lateral
+        function closeSidebar() {
+            CART_SIDEBAR.classList.remove('open');
+            SIDEBAR_OVERLAY.classList.remove('visible');
+            document.body.style.overflow = ''; // Restaurar scroll
+            
+            // Ocultar overlay completamente después de la transición
+            setTimeout(() => {
+                SIDEBAR_OVERLAY.classList.add('hidden');
+            }, 300);
+        }
+        
+        // Función para mostrar mensajes temporales (reemplazando alert())
+        function showTemporaryMessage(message, bgColor) {
+            const tempDiv = document.createElement('div');
+            tempDiv.className = `fixed top-20 left-1/2 transform -translate-x-1/2 p-4 rounded-lg text-white font-semibold shadow-xl z-[10000] ${bgColor}`;
+            tempDiv.textContent = message;
+            document.body.appendChild(tempDiv);
+            
+            setTimeout(() => {
+                tempDiv.remove();
+            }, 3000);
+        }
+
+        // Inicialización y Pantalla de Carga
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const mainContent = document.getElementById('main-content');
+            const cartIconContainer = document.getElementById('cart-icon');
+
+            // Inyectar el ícono de carrito
+            cartIconContainer.innerHTML = getCartIcon(28, 'var(--color-secondary)');
+
+            // Simular un tiempo de carga de 1.5 segundos
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                mainContent.style.opacity = '1';
+
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+                
+            }, 1500);
+
+            // Exponer funciones globales para que puedan ser llamadas desde el HTML
+            window.addToCart = addToCart;
+            window.openSidebar = openSidebar;
+            window.closeSidebar = closeSidebar;
+            window.removeItem = removeItem;
+            window.showTemporaryMessage = showTemporaryMessage;
+        });
+    </script>
+    <style>
+        /* CSS Unificado */
+        :root {
+            --color-primary: #ADD8E6; /* Azul claro */
+            --color-secondary: #0077b6; /* Azul más oscuro para acentos */
+            --color-background: #F0F8FF; /* Azul muy claro / Casi blanco */
+            --color-text: #1F2937; /* Gris oscuro para el texto */
+        }
+
+        .product-card-bg {
+            background-color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card-bg:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1), 0 5px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Estilo para el efecto de la imagen al pasar el ratón */
+        .product-image {
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .product-card-bg:hover .product-image {
+            transform: scale(1.05) rotate(1deg);
+        }
+
+        /* Estilo para la pantalla de carga */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-background);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-in-out;
+            color: var(--color-secondary);
+        }
+
+        /* Animación del spinner */
+        .spinner {
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-top: 8px solid var(--color-secondary);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fondo general de la página */
+        body {
+            background-color: var(--color-background);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Estilo para la notificación de agregado al carrito */
+        .cart-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4BB543; /* Verde para éxito */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1050;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        .cart-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Estilos específicos del Panel Lateral (Sidebar) */
+        #cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #cart-sidebar.open {
+            transform: translateX(0);
+        }
+
+        #sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #sidebar-overlay.visible {
+            opacity: 1;
+        }
+    </style>
+</body>
+</html>
