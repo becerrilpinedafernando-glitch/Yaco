@@ -59,13 +59,8 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 
@@ -146,36 +141,61 @@
         }
 
         window.addEventListener("load", () => {
-            // Mostrar marcas
             renderBrandButtons();
-
-            // Ocultar pantalla de carga
             const loading = document.getElementById("loading-screen");
-            setTimeout(() => {
-                loading.classList.add("hidden");
-            }, 1500);
+            setTimeout(() => loading.classList.add("hidden"), 1500);
         });
     </script>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="logo-nav-container">
-            <div class="logo-yaco">
-                <img src="Img/logo.png" class="logo">
-                <span class="nombre-empresa">YACO</span>
+    <!-- =============================== -->
+    <!--          HEADER RESPONSIVO      -->
+    <!-- =============================== -->
+    <header class="header bg-white shadow-md py-3">
+        <div class="logo-nav-container flex justify-between items-center mx-auto w-[90%]">
+
+            <!-- Logo -->
+            <div class="logo-yaco flex items-center space-x-3">
+                <img src="Img/logo.png" class="logo w-12 h-12 object-contain">
+                <span class="nombre-empresa text-2xl font-bold tracking-wide text-primary-blue">YACO</span>
             </div>
 
-            <nav class="nav-principal">
-                <a href="index.html">Inicio</a>
-                <a href="productos.html">Productos</a>
-                <a href="marcas.html" class="activo">Marcas</a>
-                <a href="contacto.html">Contacto</a>
+            <!-- Navegación Escritorio -->
+            <nav class="nav-principal hidden md:flex space-x-8 text-lg font-semibold text-primary-blue">
+                <a href="index.html" class="hover:text-light-blue transition">Inicio</a>
+                <a href="productos.html" class="hover:text-light-blue transition">Productos</a>
+                <a href="marcas.html" class="activo text-light-blue font-extrabold">Marcas</a>
+                <a href="contacto.html" class="hover:text-light-blue transition">Contacto</a>
             </nav>
+
+            <!-- Botón menú móvil -->
+            <div class="md:hidden cursor-pointer" onclick="toggleMobileMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="#1e3a8a" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="29" y2="6" />
+                    <line x1="3" y1="14" x2="29" y2="14" />
+                    <line x1="3" y1="22" x2="29" y2="22" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Menú móvil -->
+        <div id="mobile-menu"
+            class="md:hidden hidden flex flex-col text-center bg-white shadow-md py-4 space-y-3 text-lg font-semibold">
+            <a href="index.html" class="hover:text-light-blue transition">Inicio</a>
+            <a href="productos.html" class="hover:text-light-blue transition">Productos</a>
+            <a href="marcas.html" class="activo text-light-blue font-extrabold">Marcas</a>
+            <a href="contacto.html" class="hover:text-light-blue transition">Contacto</a>
         </div>
     </header>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById("mobile-menu").classList.toggle("hidden");
+        }
+    </script>
 
     <!-- =============================== -->
     <!--      PANTALLA DE CARGA         -->
@@ -223,6 +243,5 @@
     </footer>
 
 </body>
-
 </html>
 

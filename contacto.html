@@ -9,10 +9,10 @@
     <!-- Fuente -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- CSS unificado que ya te preparé -->
+    <!-- CSS unificado -->
     <link rel="stylesheet" href="Css/marcas.css">
 
-    <!-- Tailwind para el layout moderno -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -30,13 +30,12 @@
     </script>
 
     <style>
-        /* =============================== */
-        /*      PANTALLA DE CARGA          */
-        /* =============================== */
+        /* ============================ */
+        /*        PANTALLA DE CARGA     */
+        /* ============================ */
         #loading-screen {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             background-color: var(--color-bg-light);
@@ -44,8 +43,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            z-index: 9999;
+            transition: opacity 0.5s ease-in-out;
             color: var(--color-primary-blue);
         }
 
@@ -55,102 +54,163 @@
         }
 
         .spinner {
-            border: 8px solid rgba(0, 0, 0, 0.1);
-            border-top: 8px solid var(--color-primary-blue);
+            border: 6px solid rgba(0, 0, 0, 0.1);
+            border-top: 6px solid var(--color-primary-blue);
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================ */
+        /*       HEADER RESPONSIVO      */
+        /* ============================ */
+        .logo-nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-principal {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .nav-principal a {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .logo-nav-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-principal {
+                justify-content: center;
+            }
+
+            .logo-yaco img {
+                width: 60px;
+            }
+        }
+
+        /* ============================ */
+        /*            FOOTER            */
+        /* ============================ */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            background: #f5f5f5;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 640px) {
+            .footer {
+                font-size: 0.8rem;
+                padding: 15px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- =============================== -->
-    <!--      PANTALLA DE CARGA         -->
-    <!-- =============================== -->
+    <!-- ============================ -->
+    <!--       PANTALLA DE CARGA      -->
+    <!-- ============================ -->
     <div id="loading-screen">
         <div class="spinner"></div>
         <p class="text-xl font-bold mt-4 tracking-wider">Cargando Catálogo...</p>
         <p class="text-sm mt-1">Calidad y precio en todo lugar</p>
     </div>
 
-    <!-- HEADER (como productos) -->
-    <header class="header">
+    <!-- ============================ -->
+    <!--            HEADER            -->
+    <!-- ============================ -->
+    <header class="header bg-white shadow-sm">
         <div class="logo-nav-container">
-            <div class="logo-yaco">
-                <img src="Img/logo.png" alt="Logo YACO" class="logo">
-                <span class="nombre-empresa">YACO</span>
+
+            <div class="logo-yaco flex items-center gap-3">
+                <img src="Img/logo.png" alt="Logo YACO" class="logo w-16">
+                <span class="nombre-empresa text-2xl font-extrabold">YACO</span>
             </div>
 
             <nav class="nav-principal">
                 <a href="index.html">Inicio</a>
                 <a href="productos.html">Productos</a>
                 <a href="marcas.html">Marcas</a>
-                <a href="contacto.html" class="activo">Contacto</a>
+                <a href="contacto.html" class="activo text-primary-blue">Contacto</a>
             </nav>
+
         </div>
     </header>
 
-    <!-- CONTENIDO -->
-    <main id="main-content" class="container mx-auto px-4 py-10">
-        <section class="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
+    <!-- ============================ -->
+    <!--         CONTENIDO            -->
+    <!-- ============================ -->
+    <main class="container mx-auto px-4 py-10">
+        <section class="bg-white rounded-xl shadow-lg p-6 sm:p-8 max-w-3xl mx-auto">
 
-            <h2 class="text-3xl font-extrabold text-primary-blue mb-3 text-center">Solicita tu Cotización</h2>
+            <h2 class="text-3xl font-extrabold text-primary-blue mb-4 text-center">Solicita tu Cotización</h2>
             <p class="text-gray-600 text-center mb-6">
                 Envíanos los detalles de la pieza que necesitas y te contactaremos a la brevedad.
             </p>
 
-            <!-- FORMULARIO ORIGINAL (no modificado) -->
-            <form method="post" action="https://formsubmit.co/isaacohernandez22@gmail.com" class="flex flex-col gap-4">
+            <form method="post" action="https://formsubmit.co/isaacohernandez22@gmail.com" class="flex flex-col gap-4 w-full">
 
-                <label for="nombre" class="font-semibold text-gray-700">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required class="p-3 border border-gray-300 rounded-lg">
+                <div class="flex flex-col gap-2">
+                    <label for="nombre" class="font-semibold text-gray-700">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required class="p-3 border border-gray-300 rounded-lg w-full">
+                </div>
 
-                <label for="email" class="font-semibold text-gray-700">Correo electrónico:</label>
-                <input type="email" id="email" name="email" required class="p-3 border border-gray-300 rounded-lg">
+                <div class="flex flex-col gap-2">
+                    <label for="email" class="font-semibold text-gray-700">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" required class="p-3 border border-gray-300 rounded-lg w-full">
+                </div>
 
-                <label for="pieza" class="font-semibold text-gray-700">
-                    Pieza que necesitas (Marca, Modelo, Especificaciones):
-                </label>
-                <textarea id="pieza" name="pieza" rows="6" required class="p-3 border border-gray-300 rounded-lg"></textarea>
+                <div class="flex flex-col gap-2">
+                    <label for="pieza" class="font-semibold text-gray-700">Pieza que necesitas:</label>
+                    <textarea id="pieza" name="pieza" rows="6" required class="p-3 border border-gray-300 rounded-lg w-full"></textarea>
+                </div>
 
-                <label for="direccion" class="font-semibold text-gray-700">Dirección de entrega (opcional):</label>
-                <input type="text" id="direccion" name="direccion" class="p-3 border border-gray-300 rounded-lg">
+                <div class="flex flex-col gap-2">
+                    <label for="direccion" class="font-semibold text-gray-700">Dirección de entrega (opcional):</label>
+                    <input type="text" id="direccion" name="direccion" class="p-3 border border-gray-300 rounded-lg w-full">
+                </div>
 
-                <button type="submit" name="enviar"
-                        class="btn-productos bg-primary-blue text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 transition">
+                <button type="submit"
+                    class="bg-primary-blue text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-800 transition text-center">
                     Enviar cotización
                 </button>
             </form>
-
-            <div class="mensaje-nota mt-6 text-center text-gray-700">
-                <p>⚠️ <strong>NOTA IMPORTANTE:</strong> Me pika el webo derecho :D.</p>
-            </div>
-
         </section>
     </main>
 
-    <!-- FOOTER igual al estilo YACO -->
-    <footer class="footer">
-        <p>📍 Partanna 7 Col. Punta Palermo, Tecámac, Estado de México, C.P. 55767</p>
-        <p>📞 Tel. 5618351001 | ✉️ 01.facosta.contabilidad@gmail.com</p>
-        <p>&copy; 2025 Refacciones Industriales YACO | Todos los derechos reservados.</p>
-    </footer>
+    <!-- ============================ -->
+    <!--            FOOTER            -->
+    <!-- ============================ -->
+    <footer class="bg-primary-blue text-white text-center py-6 mt-10">
+    <p>📍 Partanna 7 Col. Punta Palermo, Tecámac, Estado de México, C.P. 55767</p>
+    <p>📞 Tel. 5618351001 | ✉️ 01.facosta.contabilidad@gmail.com</p>
+    <p>&copy; 2025 Refacciones Industriales YACO | Todos los derechos reservados.</p>
+</footer>
 
+    <!-- PANTALLA DE CARGA -->
     <script>
-        // Ocultar pantalla de carga después de 1.5 segundos
-        window.addEventListener('load', () => {
-            const loading = document.getElementById('loading-screen');
-            setTimeout(() => {
-                loading.classList.add('hidden');
-            }, 1500);
+        window.addEventListener("load", () => {
+            const loading = document.getElementById("loading-screen");
+            setTimeout(() => loading.classList.add("hidden"), 1200);
         });
     </script>
 

@@ -28,19 +28,15 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
     <!-- Custom CSS -->
     <link rel="stylesheet" href="Css/index.css">
 
     <style>
-        /* Hero */
         .hero-background {
             background-image: url('Img/productos.png');
             background-size: cover;
             background-position: center;
-            min-height: 700px;
+            min-height: 550px; /* reducido para móviles */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -59,50 +55,81 @@
             inset: 0;
             background-color: rgba(0, 0, 0, 0.45);
         }
+
+        /* Menú móvil */
+        #mobile-menu { display: none; }
+        
+        @media (max-width: 768px) {
+            #desktop-menu { display: none; }
+            #mobile-menu { display: block; }
+        }
     </style>
 </head>
+
 <body class="bg-bg-light font-roboto">
 
     <!-- Header -->
     <header class="absolute top-0 w-full z-50 py-4">
         <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+
+            <!-- LOGO -->
             <div class="flex items-center gap-2">
                 <img src="Img/logo.png" alt="Logo YACO" class="w-12 h-12 rounded-full">
                 <span class="text-white text-2xl font-bold">YACO</span>
             </div>
-            <nav class="flex gap-6 text-white font-semibold">
+
+            <!-- MENÚ DE ESCRITORIO -->
+            <nav id="desktop-menu" class="flex gap-6 text-white font-semibold">
                 <a href="index.html" class="hover:text-light-blue transition">Inicio</a>
                 <a href="productos.html" class="hover:text-light-blue transition">Productos</a>
                 <a href="marcas.html" class="hover:text-light-blue transition">Marcas</a>
                 <a href="contacto.html" class="hover:text-light-blue transition">Contacto</a>
             </nav>
+
+            <!-- MENÚ MÓVIL -->
+            <button id="mobile-menu" class="text-white text-3xl">
+                ☰
+            </button>
+        </div>
+
+        <!-- PANEL MÓVIL -->
+        <div id="mobile-panel" class="hidden bg-primary-blue text-white py-4 space-y-3 px-4 text-lg">
+            <a href="index.html" class="block">Inicio</a>
+            <a href="productos.html" class="block">Productos</a>
+            <a href="marcas.html" class="block">Marcas</a>
+            <a href="contacto.html" class="block">Contacto</a>
         </div>
     </header>
 
     <!-- Main -->
     <main class="space-y-10">
 
-        <!-- Hero Section -->
+        <!-- HERO -->
         <section class="hero-background">
             <div class="hero-overlay"></div>
+
             <div class="relative z-10 max-w-6xl mx-auto px-4 py-20 text-white text-center md:text-left">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-snug drop-shadow-lg">
-                    REFACCIONES Industriales YACO: <br> Productividad de tu Industria
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-snug drop-shadow-lg">
+                    REFACCIONES Industriales YACO <br> Productividad de tu Industria
                 </h1>
-                <p class="text-xl mb-8 drop-shadow-md max-w-2xl mx-auto md:mx-0">
+
+                <p class="text-lg md:text-xl mb-8 drop-shadow-md max-w-2xl mx-auto md:mx-0">
                     Productos de alta calidad de las mejores marcas, cumpliendo con los más altos estándares.
                 </p>
-                <a href="productos.html" class="bg-light-blue text-white px-8 py-4 rounded-xl text-xl font-bold shadow-2xl hover:bg-primary-blue transition duration-300 transform hover:scale-105 inline-block">
+
+                <a href="productos.html"
+                   class="bg-light-blue text-white px-7 md:px-8 py-3 md:py-4 rounded-xl text-lg md:text-xl font-bold shadow-2xl hover:bg-primary-blue transition duration-300 transform hover:scale-105 inline-block">
                     Ver Productos
                 </a>
             </div>
         </section>
 
-        <!-- About Section -->
+        <!-- CONTENIDO -->
         <div class="max-w-6xl mx-auto px-4 space-y-10">
 
+            <!-- QUIÉNES SOMOS -->
             <section class="space-y-8">
-                <h2 class="text-3xl font-bold text-primary-blue mb-5">¿Quiénes Somos?</h2>
+                <h2 class="text-3xl font-bold text-primary-blue">¿Quiénes Somos?</h2>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 shadow-card rounded-2xl border-l-4 border-primary-blue hover:shadow-card-hover transition">
@@ -113,17 +140,19 @@
                             <li>• Respetar las normas de sanidad y medio ambiente.</li>
                         </ul>
                     </div>
+
                     <div class="bg-white p-6 shadow-card rounded-2xl border-l-4 border-primary-blue hover:shadow-card-hover transition">
                         <h3 class="text-xl font-semibold text-primary-blue mb-3">Objetivos Clave:</h3>
                         <ul class="text-gray-700 space-y-2">
-                            <li>• Ofrecer un servicio profesional y preciso.</li>
-                            <li>• Preservar el medio ambiente con productos ahorradores de energía.</li>
-                            <li>• Satisfacer necesidades técnicas y operativas.</li>
+                            <li>• Servicio profesional y preciso.</li>
+                            <li>• Productos que ahorran energía.</li>
+                            <li>• Soluciones técnicas y eficientes.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6 mt-6">
+                <!-- ICONOS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
                     <div class="bg-white p-6 rounded-2xl shadow-card text-center hover:shadow-card-hover transition">
                         <i class="fas fa-certificate text-primary-blue text-3xl mb-2"></i>
                         <p class="font-semibold">Calidad documentada</p>
@@ -139,22 +168,24 @@
                 </div>
             </section>
 
-            <!-- Products Section -->
+            <!-- PRODUCTOS -->
             <section class="space-y-6">
                 <h2 class="text-3xl font-bold text-primary-blue mb-6">Eficiencia y Calidad para tu Industria</h2>
 
-                <div class="grid md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     <div class="bg-white shadow-card rounded-2xl p-4 text-center hover:shadow-card-hover transition">
                         <img src="Img/productos.png" alt="Productos" class="w-full h-40 object-cover rounded-md mb-3">
                         <p class="text-gray-700">Calidad en todo tipo de piezas y suministros.</p>
                     </div>
+
                     <div class="bg-white shadow-card rounded-2xl p-4 text-center hover:shadow-card-hover transition">
                         <img src="Img/cal.jfif" alt="Calidad" class="w-full h-40 object-cover rounded-md mb-3">
                         <p class="text-gray-700">Innovación constante en ingeniería de precisión.</p>
                     </div>
+
                     <div class="bg-white shadow-card rounded-2xl p-4 text-center hover:shadow-card-hover transition">
                         <img src="Img/ing.jfif" alt="Ingeniería" class="w-full h-40 object-cover rounded-md mb-3">
-                        <p class="text-gray-700">Enfoque en la eficiencia y la durabilidad.</p>
+                        <p class="text-gray-700">Eficiencia y durabilidad garantizadas.</p>
                     </div>
                 </div>
             </section>
@@ -163,10 +194,18 @@
 
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="bg-primary-blue text-white text-center py-6 mt-10">
         <p>&copy; 2025 Refacciones Industriales YACO | Todos los derechos reservados.</p>
     </footer>
 
+    <!-- SCRIPT PARA MENÚ MÓVIL -->
+    <script>
+        document.getElementById("mobile-menu").addEventListener("click", () => {
+            document.getElementById("mobile-panel").classList.toggle("hidden");
+        });
+    </script>
+
 </body>
 </html>
+
